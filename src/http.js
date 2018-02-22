@@ -1,6 +1,6 @@
 'use strict';
 class Http {
-    _request = function(method, url) {
+    _request(method, url) {
         const promise = new Promise((success, error) => {
             const xhr = new XMLHttpRequest()
                 ,url = this.url;

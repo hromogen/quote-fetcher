@@ -1,5 +1,5 @@
 'use strict';
-export default class PromptBox{
+export class PromptBox{
     constructor(selector){
         this._container = document.querySelector(sSelector);
         this._citation = {};

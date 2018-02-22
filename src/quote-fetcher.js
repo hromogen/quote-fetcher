@@ -1,7 +1,7 @@
-import {http} from './http-getter';
-import {PromptBox} from './citation-handler';
+import {http} from './http';
+import {PromptBox} from './prompt-box';
 
-class QuoteFetcher {
+export class QuoteFetcher {
     constructor(initButtonSelector){
         this._usedQuoteNums = [];
         this._citations = [];
