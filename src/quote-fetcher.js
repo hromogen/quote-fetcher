@@ -2,17 +2,17 @@ import {http} from './http-getter';
 import {PromptBox} from './citation-handler';
 
 class QuoteFetcher {
-    constructor(startButtonSelector){
+    constructor(initButtonSelector){
         this._usedQuoteNums = [];
         this._citations = [];
-        this._startButton = document.querySelector(startButtonSelector);
+        this._startButton = document.querySelector(initButtonSelector);
         this._citationsList = document.querySelector('.citations-list');
         this._citationsPromise = http.get('https://talaikis.com/api/quotes/');
         this._rightPromptBox = new PromptBox('.propmpt-article--left');
         this._leftPromptBox = new PromptBox('.propmpt-article--right');
 
         this._startButton.addEventListener('click', this.init);
-    }
+    };
     init(){
         this._citationsPromise.then(
             success => {
@@ -21,7 +21,7 @@ class QuoteFetcher {
                 leftPromptBox.addClickListener(this._onPromptClick);
                 this._insertCitations(rightPromptBox, leftPromptBox);
         });
-    }
+    };
     _insertCitations(rightBox, leftBox){
         const leftCitationNum = _generateRandom(len, this._usedQuoteNums)
         ,rightCitationNum = _generateRandom(len, this._usedQuoteNums);
@@ -30,7 +30,7 @@ class QuoteFetcher {
         rightBox.setQNum(rightCitaionNum);
         leftBox.addCitation(this._citations[leftCitaionNum]);
         leftBox.setQNum(leftCitaionNum);
-    }
+    };
     _onPromptClick(promptBox){
         _storeChosen(promptBox);
         this._usedQuoteNums.push(promptBox.getQNum());
@@ -41,7 +41,7 @@ class QuoteFetcher {
                 , leftPromptBox
                 , this._citations)
         }
-    }
+    };
     _storeChosen(promptBox){
         const li = document.createElement('li')
         ,citation = promptBox.getCitation();

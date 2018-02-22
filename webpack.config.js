@@ -14,23 +14,8 @@ module.exports = {
 
     filename: "bundle.js", // string
     // the filename template for entry chunks
-
-
-
   },
-
-
-
-        options: {
-          presets: ["es2015"]
-        },
- 
-
   plugins: [
     // ...
   ],
-  // list of additional plugins
-
-
-  /* Advanced configuration (click to show) */
 }
