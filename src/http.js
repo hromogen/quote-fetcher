@@ -1,9 +1,6 @@
 'use strict';
-export default class Http {
-    constructor(url){
-        this.url = url;
-    }
-    _request = function(method) {
+class Http {
+    _request = function(method, url) {
         const promise = new Promise((success, error) => {
             const xhr = new XMLHttpRequest()
                 ,url = this.url;
@@ -23,11 +20,12 @@ export default class Http {
         });
     };
 
-    get() {
-        return this._request('GET')
+    get(url) {
+        return this._request('GET',url);
     };
 
-    post() {
-        return this._request('POST')
+    post(url) {
+        return this._request('POST', url);
     };
 }
+export const http = new Http()

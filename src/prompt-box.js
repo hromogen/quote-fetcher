@@ -1,26 +1,38 @@
 'use strict';
-export default class CitationImplementer{
-    constructor(
-        promptBoxSelector
-        ,citation
-    ){
-        this.promptBox = document.querySelector(promptBoxSelector);
-        this.quoteList = document.querySelector('.citations-list');
-        this.quoteBox = document.createElement('span');
-        this.authorBox = document.createElement('span');
-
-        this.quoteBox.innerHTML = citation.quote;
-        this.authorBox.innerHTML = citation.author;
-
-
-
-
+export default class PromptBox{
+    constructor(selector){
+        this._container = document.querySelector(sSelector);
+        this._citation = {};
+        this._qNum = -1;
     }
-}
-function generateRandom(maxVal, lockedNums){
-    let result;
-    while(lockedNums.indexOf(result) == -1){
-        result = Math.floor(Math.random()*maxVal);
+    clear(){
+        this._container.innerHTML = "";
     }
-    return result;
+    addCitation(citation){
+        const quoteBox  = document.createElement('q')
+        ,authorBox = document.createElement('cite');
+
+        quoteBox.className = 'quotation';
+        authorBox.className = 'author';
+        quoteBox.innerHTML = citation.quote;
+        authorBox.innerHTML = citation.author;
+
+        this.clear();
+        this._citation.quoteBox = quoteBox;
+        this._citation.authorBox = authorBox;
+        this._container.append(quoteBox, authorBox);
+    }
+    getCitation(){
+        return this._citation; 
+    }
+    setQNum(num){
+        this._qNum = num;
+    }
+    getQNum(){
+        return this._qNum;
+    }
+    addClickListner(listener){
+        const promptBox = this;
+        this._container.addEventListener('click', () => listener(promptBox))
+    }
 }
