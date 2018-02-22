@@ -1,7 +1,7 @@
 'use strict';
 export class PromptBox{
     constructor(selector){
-        this._container = document.querySelector(sSelector);
+        this._container = document.querySelector(selector);
         this._citation = {};
         this._qNum = -1;
     }

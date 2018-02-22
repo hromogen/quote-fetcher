@@ -65,171 +65,238 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__quote_fetcher__ = __webpack_require__(1);
 
 
-const c = new __WEBPACK_IMPORTED_MODULE_0__quote_fetcher__["a" /* QuoteFetcher */]('.init-buton');
+var _quoteFetcher = __webpack_require__(1);
 
-
+var c = new _quoteFetcher.QuoteFetcher('.init-buton');
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__http__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__prompt_box__ = __webpack_require__(3);
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.QuoteFetcher = undefined;
 
-class QuoteFetcher {
-    constructor(initButtonSelector){
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _http = __webpack_require__(2);
+
+var _promptBox = __webpack_require__(3);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var QuoteFetcher = exports.QuoteFetcher = function () {
+    function QuoteFetcher(initButtonSelector) {
+        _classCallCheck(this, QuoteFetcher);
+
         this._usedQuoteNums = [];
         this._citations = [];
         this._startButton = document.querySelector(initButtonSelector);
         this._citationsList = document.querySelector('.citations-list');
-        this._citationsPromise = __WEBPACK_IMPORTED_MODULE_0__http__["a" /* http */].get('https://talaikis.com/api/quotes/');
-        this._rightPromptBox = new __WEBPACK_IMPORTED_MODULE_1__prompt_box__["a" /* PromptBox */]('.propmpt-article--left');
-        this._leftPromptBox = new __WEBPACK_IMPORTED_MODULE_1__prompt_box__["a" /* PromptBox */]('.propmpt-article--right');
+        this._citationsPromise = _http.http.get('https://talaikis.com/api/quotes/');
+        this._rightPromptBox = new _promptBox.PromptBox('.propmpt-article--left');
+        this._leftPromptBox = new _promptBox.PromptBox('.propmpt-article--right');
 
         this._startButton.addEventListener('click', this.init);
-    };
-    init(){
-        this._citationsPromise.then(
-            success => {
-                this._citations = success;
-                rightPromptBox.addClickListener(this._onPromptClick);
-                leftPromptBox.addClickListener(this._onPromptClick);
-                this._insertCitations(rightPromptBox, leftPromptBox);
-        });
-    };
-    _insertCitations(rightBox, leftBox){
-        const leftCitationNum = _generateRandom(len, this._usedQuoteNums)
-        ,rightCitationNum = _generateRandom(len, this._usedQuoteNums);
-
-        rightBox.addCitation(this._citations[rightCitaionNum]);
-        rightBox.setQNum(rightCitaionNum);
-        leftBox.addCitation(this._citations[leftCitaionNum]);
-        leftBox.setQNum(leftCitaionNum);
-    };
-    _onPromptClick(promptBox){
-        _storeChosen(promptBox);
-        this._usedQuoteNums.push(promptBox.getQNum());
-        if(success.length >= this._usedQuoteNums.length){
-            window.reload(false);
-        }else{
-            this._insertCitations(rightPromptBox
-                , leftPromptBox
-                , this._citations)
-        }
-    };
-    _storeChosen(promptBox){
-        const li = document.createElement('li')
-        ,citation = promptBox.getCitation();
-        li.append(citation.quoteBox, citation.authorBox);
-        this._citationsList.appendChild(li);
     }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = QuoteFetcher;
 
+    _createClass(QuoteFetcher, [{
+        key: 'init',
+        value: function init() {
+            var _this = this;
 
+            this._citationsPromise.then(function (success) {
+                _this._citations = success;
+                rightPromptBox.addClickListener(_this._onPromptClick);
+                leftPromptBox.addClickListener(_this._onPromptClick);
+                _this._insertCitations(rightPromptBox, leftPromptBox);
+            });
+        }
+    }, {
+        key: '_insertCitations',
+        value: function _insertCitations(rightBox, leftBox) {
+            var leftCitationNum = _generateRandom(len, this._usedQuoteNums),
+                rightCitationNum = _generateRandom(len, this._usedQuoteNums);
 
-function _generateRandom(maxVal, lockedNums){
-    let result;
-    while(lockedNums.indexOf(result) == -1){
-        result = Math.floor(Math.random()*maxVal);
+            rightBox.addCitation(this._citations[rightCitaionNum]);
+            rightBox.setQNum(rightCitaionNum);
+            leftBox.addCitation(this._citations[leftCitaionNum]);
+            leftBox.setQNum(leftCitaionNum);
+        }
+    }, {
+        key: '_onPromptClick',
+        value: function _onPromptClick(promptBox) {
+            _storeChosen(promptBox);
+            this._usedQuoteNums.push(promptBox.getQNum());
+            if (success.length >= this._usedQuoteNums.length) {
+                window.reload(false);
+            } else {
+                this._insertCitations(rightPromptBox, leftPromptBox, this._citations);
+            }
+        }
+    }, {
+        key: '_storeChosen',
+        value: function _storeChosen(promptBox) {
+            var li = document.createElement('li'),
+                citation = promptBox.getCitation();
+            li.append(citation.quoteBox, citation.authorBox);
+            this._citationsList.appendChild(li);
+        }
+    }]);
+
+    return QuoteFetcher;
+}();
+
+function _generateRandom(maxVal, lockedNums) {
+    var result = void 0;
+    while (lockedNums.indexOf(result) == -1) {
+        result = Math.floor(Math.random() * maxVal);
     }
     return result;
 }
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-class Http {
-    _request(method, url) {
-        const promise = new Promise((success, error) => {
-            const xhr = new XMLHttpRequest()
-                ,url = this.url;
 
-            xhr.open(method, url, true);
-            xhr.send();
-            xhr.onerror = function(error){
-                console.log(error);
-            };
-            xhr.onreadystatechange = function() {
-                if (this.readyState !== 4) {
-                    return;
-                } else {
-                    success(JSON.parse(this.responseText));
-                }
-            }
-        });
-    };
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-    get(url) {
-        return this._request('GET',url);
-    };
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    post(url) {
-        return this._request('POST', url);
-    };
-}
-const http = new Http()
-/* harmony export (immutable) */ __webpack_exports__["a"] = http;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Http = function () {
+    function Http() {
+        _classCallCheck(this, Http);
+    }
+
+    _createClass(Http, [{
+        key: '_request',
+        value: function _request(method, url) {
+            var _this = this;
+
+            var promise = new Promise(function (success, error) {
+                var xhr = new XMLHttpRequest(),
+                    url = _this.url;
+
+                xhr.open(method, url, true);
+                xhr.send();
+                xhr.onerror = function (error) {
+                    console.log(error);
+                };
+                xhr.onreadystatechange = function () {
+                    if (this.readyState !== 4) {
+                        return;
+                    } else {
+                        success(JSON.parse(this.responseText));
+                    }
+                };
+            });
+        }
+    }, {
+        key: 'get',
+        value: function get(url) {
+            return this._request('GET', url);
+        }
+    }, {
+        key: 'post',
+        value: function post(url) {
+            return this._request('POST', url);
+        }
+    }]);
+
+    return Http;
+}();
+
+var http = exports.http = new Http();
 
 /***/ }),
 /* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-class PromptBox{
-    constructor(selector){
-        this._container = document.querySelector(sSelector);
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PromptBox = exports.PromptBox = function () {
+    function PromptBox(selector) {
+        _classCallCheck(this, PromptBox);
+
+        this._container = document.querySelector(selector);
         this._citation = {};
         this._qNum = -1;
     }
-    clear(){
-        this._container.innerHTML = "";
-    }
-    addCitation(citation){
-        const quoteBox  = document.createElement('q')
-        ,authorBox = document.createElement('cite');
 
-        quoteBox.className = 'quotation';
-        authorBox.className = 'author';
-        quoteBox.innerHTML = citation.quote;
-        authorBox.innerHTML = citation.author;
+    _createClass(PromptBox, [{
+        key: 'clear',
+        value: function clear() {
+            this._container.innerHTML = "";
+        }
+    }, {
+        key: 'addCitation',
+        value: function addCitation(citation) {
+            var quoteBox = document.createElement('q'),
+                authorBox = document.createElement('cite');
 
-        this.clear();
-        this._citation.quoteBox = quoteBox;
-        this._citation.authorBox = authorBox;
-        this._container.append(quoteBox, authorBox);
-    }
-    getCitation(){
-        return this._citation; 
-    }
-    setQNum(num){
-        this._qNum = num;
-    }
-    getQNum(){
-        return this._qNum;
-    }
-    addClickListner(listener){
-        const promptBox = this;
-        this._container.addEventListener('click', () => listener(promptBox))
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = PromptBox;
+            quoteBox.className = 'quotation';
+            authorBox.className = 'author';
+            quoteBox.innerHTML = citation.quote;
+            authorBox.innerHTML = citation.author;
 
+            this.clear();
+            this._citation.quoteBox = quoteBox;
+            this._citation.authorBox = authorBox;
+            this._container.append(quoteBox, authorBox);
+        }
+    }, {
+        key: 'getCitation',
+        value: function getCitation() {
+            return this._citation;
+        }
+    }, {
+        key: 'setQNum',
+        value: function setQNum(num) {
+            this._qNum = num;
+        }
+    }, {
+        key: 'getQNum',
+        value: function getQNum() {
+            return this._qNum;
+        }
+    }, {
+        key: 'addClickListner',
+        value: function addClickListner(listener) {
+            var promptBox = this;
+            this._container.addEventListener('click', function () {
+                return listener(promptBox);
+            });
+        }
+    }]);
+
+    return PromptBox;
+}();
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=bundle.js.map

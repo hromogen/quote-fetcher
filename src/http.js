@@ -2,9 +2,7 @@
 class Http {
     _request(method, url) {
         const promise = new Promise((success, error) => {
-            const xhr = new XMLHttpRequest()
-                ,url = this.url;
-
+            const xhr = new XMLHttpRequest();
             xhr.open(method, url, true);
             xhr.send();
             xhr.onerror = function(error){

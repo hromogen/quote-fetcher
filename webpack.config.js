@@ -15,7 +15,19 @@ module.exports = {
     filename: "bundle.js", // string
     // the filename template for entry chunks
   },
-  plugins: [
-    // ...
-  ],
+  module: {
+    loaders: [
+        {
+            test: /\.js$/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['es2015']
+            }
+        }
+    ]
+},
+stats: {
+    colors: true
+},
+devtool: 'source-map'
 }
