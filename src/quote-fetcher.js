@@ -11,35 +11,35 @@ export class QuoteFetcher {
         this._rightPromptBox = new PromptBox('.propmpt-article--left');
         this._leftPromptBox = new PromptBox('.propmpt-article--right');
 
-        this._startButton.addEventListener('click', this.init);
+        this._startButton.addEventListener('click', this.init.bind(this));
     };
     init(){
         this._citationsPromise.then(
             success => {
                 this._citations = success;
-                rightPromptBox.addClickListener(this._onPromptClick);
-                leftPromptBox.addClickListener(this._onPromptClick);
-                this._insertCitations(rightPromptBox, leftPromptBox);
+                this._rightPromptBox.addClickListener(this._onPromptClick.bind(this));
+                this._leftPromptBox.addClickListener(this._onPromptClick.bind(this));
+                this._insertCitations();
         });
     };
-    _insertCitations(rightBox, leftBox){
-        const leftCitationNum = _generateRandom(len, this._usedQuoteNums)
-        ,rightCitationNum = _generateRandom(len, this._usedQuoteNums);
+    _insertCitations(){
+        const len = this._citations.length
+        ,leftCitationNum = _generateRandom(len, this._usedQuoteNums)
+        ,usedQuoteNums = this._usedQuoteNums.concat(leftCitationNum)
+        ,rightCitationNum = _generateRandom(len, usedQuoteNums);
 
-        rightBox.addCitation(this._citations[rightCitaionNum]);
-        rightBox.setQNum(rightCitaionNum);
-        leftBox.addCitation(this._citations[leftCitaionNum]);
-        leftBox.setQNum(leftCitaionNum);
+        this._rightPromptBox.addCitation(this._citations[rightCitationNum]);
+        this._rightPromptBox.setQNum(rightCitationNum);
+        this._leftPromptBox.addCitation(this._citations[leftCitationNum]);
+        this._leftPromptBox.setQNum(leftCitationNum);
     };
     _onPromptClick(promptBox){
-        _storeChosen(promptBox);
+        this._storeChosen(promptBox);
         this._usedQuoteNums.push(promptBox.getQNum());
-        if(success.length >= this._usedQuoteNums.length){
+        if(this._citations.length <= this._usedQuoteNums.length){
             window.reload(false);
         }else{
-            this._insertCitations(rightPromptBox
-                , leftPromptBox
-                , this._citations)
+            this._insertCitations()
         }
     };
     _storeChosen(promptBox){
@@ -53,8 +53,8 @@ export class QuoteFetcher {
 
 function _generateRandom(maxVal, lockedNums){
     let result;
-    while(lockedNums.indexOf(result) == -1){
+    do{
         result = Math.floor(Math.random()*maxVal);
-    }
+    }while(lockedNums.indexOf(result) !== -1);
     return result;
 }

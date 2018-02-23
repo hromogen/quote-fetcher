@@ -4,10 +4,10 @@ export class PromptBox{
         this._container = document.querySelector(selector);
         this._citation = {};
         this._qNum = -1;
-    }
+    };
     clear(){
         this._container.innerHTML = "";
-    }
+    };
     addCitation(citation){
         const quoteBox  = document.createElement('q')
         ,authorBox = document.createElement('cite');
@@ -21,17 +21,17 @@ export class PromptBox{
         this._citation.quoteBox = quoteBox;
         this._citation.authorBox = authorBox;
         this._container.append(quoteBox, authorBox);
-    }
+    };
     getCitation(){
         return this._citation; 
-    }
+    };
     setQNum(num){
         this._qNum = num;
-    }
+    };
     getQNum(){
         return this._qNum;
-    }
-    addClickListner(listener){
+    };
+    addClickListener(listener){
         const promptBox = this;
         this._container.addEventListener('click', () => listener(promptBox))
     }

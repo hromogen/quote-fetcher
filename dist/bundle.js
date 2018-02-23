@@ -106,7 +106,7 @@ var QuoteFetcher = exports.QuoteFetcher = function () {
         this._rightPromptBox = new _promptBox.PromptBox('.propmpt-article--left');
         this._leftPromptBox = new _promptBox.PromptBox('.propmpt-article--right');
 
-        this._startButton.addEventListener('click', this.init);
+        this._startButton.addEventListener('click', this.init.bind(this));
     }
 
     _createClass(QuoteFetcher, [{
@@ -116,31 +116,33 @@ var QuoteFetcher = exports.QuoteFetcher = function () {
 
             this._citationsPromise.then(function (success) {
                 _this._citations = success;
-                rightPromptBox.addClickListener(_this._onPromptClick);
-                leftPromptBox.addClickListener(_this._onPromptClick);
-                _this._insertCitations(rightPromptBox, leftPromptBox);
+                _this._rightPromptBox.addClickListener(_this._onPromptClick.bind(_this));
+                _this._leftPromptBox.addClickListener(_this._onPromptClick.bind(_this));
+                _this._insertCitations();
             });
         }
     }, {
         key: '_insertCitations',
-        value: function _insertCitations(rightBox, leftBox) {
-            var leftCitationNum = _generateRandom(len, this._usedQuoteNums),
-                rightCitationNum = _generateRandom(len, this._usedQuoteNums);
+        value: function _insertCitations() {
+            var len = this._citations.length,
+                leftCitationNum = _generateRandom(len, this._usedQuoteNums),
+                usedQuoteNums = this._usedQuoteNums.concat(leftCitationNum),
+                rightCitationNum = _generateRandom(len, usedQuoteNums);
 
-            rightBox.addCitation(this._citations[rightCitaionNum]);
-            rightBox.setQNum(rightCitaionNum);
-            leftBox.addCitation(this._citations[leftCitaionNum]);
-            leftBox.setQNum(leftCitaionNum);
+            this._rightPromptBox.addCitation(this._citations[rightCitationNum]);
+            this._rightPromptBox.setQNum(rightCitationNum);
+            this._leftPromptBox.addCitation(this._citations[leftCitationNum]);
+            this._leftPromptBox.setQNum(leftCitationNum);
         }
     }, {
         key: '_onPromptClick',
         value: function _onPromptClick(promptBox) {
-            _storeChosen(promptBox);
+            this._storeChosen(promptBox);
             this._usedQuoteNums.push(promptBox.getQNum());
-            if (success.length >= this._usedQuoteNums.length) {
+            if (this._citations.length <= this._usedQuoteNums.length) {
                 window.reload(false);
             } else {
-                this._insertCitations(rightPromptBox, leftPromptBox, this._citations);
+                this._insertCitations();
             }
         }
     }, {
@@ -158,9 +160,9 @@ var QuoteFetcher = exports.QuoteFetcher = function () {
 
 function _generateRandom(maxVal, lockedNums) {
     var result = void 0;
-    while (lockedNums.indexOf(result) == -1) {
+    do {
         result = Math.floor(Math.random() * maxVal);
-    }
+    } while (lockedNums.indexOf(result) !== -1);
     return result;
 }
 
@@ -187,12 +189,8 @@ var Http = function () {
     _createClass(Http, [{
         key: '_request',
         value: function _request(method, url) {
-            var _this = this;
-
-            var promise = new Promise(function (success, error) {
-                var xhr = new XMLHttpRequest(),
-                    url = _this.url;
-
+            return new Promise(function (success, error) {
+                var xhr = new XMLHttpRequest();
                 xhr.open(method, url, true);
                 xhr.send();
                 xhr.onerror = function (error) {
@@ -285,8 +283,8 @@ var PromptBox = exports.PromptBox = function () {
             return this._qNum;
         }
     }, {
-        key: 'addClickListner',
-        value: function addClickListner(listener) {
+        key: 'addClickListener',
+        value: function addClickListener(listener) {
             var promptBox = this;
             this._container.addEventListener('click', function () {
                 return listener(promptBox);
